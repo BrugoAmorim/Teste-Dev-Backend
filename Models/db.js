@@ -1,6 +1,6 @@
 
 const Sequelize = require('sequelize');
-const conexaodb = new Sequelize('dbteste', 'root', '12345', {
+const conexaodb = new Sequelize($BANCODEDADOS, $USUARIO, $SENHA, {
     host: 'localhost',
     dialect: 'mysql'
 });
