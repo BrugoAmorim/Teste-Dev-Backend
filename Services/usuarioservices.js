@@ -1,5 +1,5 @@
 
-const utils = require('../Utils/usuarioutils');
+const utils = require('../Utils/conversorutils');
 const database = require('../Database/usuariodatabase');
 
 function validarEmail(email) {
@@ -12,11 +12,13 @@ const BuscarUsuarios = (Usuarios) => {
     if(Usuarios.length === 0)
         throw new Error("Não há usuários registrados");
 
-    const caixoteRes = utils.usuarioRes(Usuarios, "Usuários retornados com sucesso", "sucesso", 200);
+    const caixoteRes = utils.CriarModelRes(Usuarios, "Usuários retornados com sucesso", "sucesso", 200);
     return caixoteRes;
 }
 
 const NovoUsuario = async (req) => {
+
+    const listaUsuarios = await database.buscarUsuarios();
 
     if(req.Nome.length === 0)
         throw new Error("o campo Nome é obrigatório");
@@ -33,17 +35,17 @@ const NovoUsuario = async (req) => {
     if(req.Cpf.length === 0)
         throw new Error("o campo Cpf é obrigatório");
 
-    if(await database.buscarEmail(req.Email) != null)
+    if(listaUsuarios.filter(x => x.email === req.Email).length > 0)
         throw new Error("este Email já esta sendo utilizado");
 
-    if(validarEmail(req.Email) == false)
-        throw new Error("este Email é inválido");
+    const CpfUsuario = req.Cpf.split(".").join("").replace("-", "");
+    const getcpf = listaUsuarios.filter(x => x.cpf.split(".").join("").replace("-", "") == CpfUsuario);
 
-    if(await database.buscarCpf(req.Cpf) != null)
+    if(getcpf.length > 0)
         throw new Error("o Cpf informado já esta sendo utilizado");
 
     const usuariosalvo = await database.inserirUsuario(req);
-    const caixoteRes = utils.usuarioRes(usuariosalvo, "Usuário registrado", "sucesso", 200);
+    const caixoteRes = utils.CriarModelRes(usuariosalvo, "Usuário registrado", "sucesso", 200);
     return caixoteRes;
 }
 
@@ -56,7 +58,7 @@ const ExcluirUsuario = async (idusuario) => {
 
     await database.apagarUsuario(idusuario);
 
-    const modelsRes = utils.usuarioRes({}, "Usuário removido", "sucesso", 200);
+    const modelsRes = utils.CriarModelRes({}, "Usuário removido", "sucesso", 200);
     return modelsRes;
 }
 
@@ -98,7 +100,7 @@ const EditarUsuario = async (idusuario, req) => {
     await database.salvarAlteracoesUsuario(idusuario, req);
     const infoatualizadas = await database.buscarUsuarioId(idusuario);
 
-    const caixoteRes = utils.usuarioRes(infoatualizadas, "Informações alteradas com sucesso", "sucesso", 200);
+    const caixoteRes = utils.CriarModelRes(infoatualizadas, "Informações alteradas com sucesso", "sucesso", 200);
     return caixoteRes;
 }
 
@@ -109,7 +111,7 @@ const FiltrarUsuarioId = async (idusuario) => {
     if(user === null)
         throw new Error("Este usuário não foi encotrado");
 
-    const caixoteRes = utils.usuarioRes(user, "Usuário encontrado com sucesso", "sucesso", 200);
+    const caixoteRes = utils.CriarModelRes(user, "Usuário encontrado com sucesso", "sucesso", 200);
     return caixoteRes;
 }
 

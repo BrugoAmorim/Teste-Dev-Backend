@@ -1,7 +1,7 @@
 
 const validacoes = require('../Services/usuarioservices');
 const database = require('../Database/usuariodatabase');
-const utils = require('../Utils/usuarioutils');
+const utils = require('../Utils/conversorutils');
 
 const buscarUsuarios = async (req, res) => {
 
@@ -13,7 +13,7 @@ const buscarUsuarios = async (req, res) => {
     }
     catch(err){
 
-        const ErrorResponse = utils.usuarioRes(req.body, err.message, "falha na requisição", 400);
+        const ErrorResponse = utils.CriarModelRes(req.body, err.message, "falha na requisição", 400);
         return res.status(400).json(ErrorResponse);
     }
 }
@@ -28,7 +28,7 @@ const novoUsuario = async (req, res) => {
     }
     catch(err){
 
-        const ErrorResponse = utils.usuarioRes(req.body, err.message, "falha na requisição", 400);
+        const ErrorResponse = utils.CriarModelRes(req.body, err.message, "falha na requisição", 400);
         return res.status(400).json(ErrorResponse);
     }
 }
@@ -43,7 +43,7 @@ const removerUsuario = async (req, res) => {
     }
     catch(err){
 
-        const ErrorResponse = utils.usuarioRes(req.params, err.message, "falha na requisição", 400);
+        const ErrorResponse = utils.CriarModelRes(req.params, err.message, "falha na requisição", 400);
         return res.status(400).json(ErrorResponse);
     }
 }
@@ -58,7 +58,7 @@ const editarUsuario = async (req, res) => {
     }
     catch(err){
 
-        const ErrorResponse = utils.usuarioRes(req.body, err.message, "falha na requisição", 400);
+        const ErrorResponse = utils.CriarModelRes(req.body, err.message, "falha na requisição", 400);
         return res.status(400).json(ErrorResponse);
     }
 }
@@ -73,7 +73,7 @@ const buscarUsuarioId = async (req, res) => {
     }
     catch(err){
 
-        const ErrorResponse = utils.usuarioRes({}, err.message, "falha na requisição", 400);
+        const ErrorResponse = utils.CriarModelRes({}, err.message, "falha na requisição", 400);
         return res.status(400).json(ErrorResponse);
     }
 }

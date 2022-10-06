@@ -44,7 +44,7 @@ const tbEnderecosUsuarios = conexaodb.define('enderecos_usuarios', {
     }
 }, { timestamps: false });
 
-// tbEnderecosUsuarios.sync({ extends: true });
-// tbUsuarios.hasOne(tbEnderecosUsuarios, { foreignKey: "id_usuario" });
+tbEnderecosUsuarios.sync({ extends: true });
+tbUsuarios.hasOne(tbEnderecosUsuarios, { foreignKey: "id_usuario" });
 
 module.exports = { tbEnderecosUsuarios };

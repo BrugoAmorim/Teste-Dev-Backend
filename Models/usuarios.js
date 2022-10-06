@@ -31,6 +31,6 @@ const tbUsuarios = conexaodb.define('usuarios', {
     }
 }, { timestamps: false });
 
-// tbUsuarios.sync({ alter: true });
+tbUsuarios.sync({ alter: true });
 
 module.exports = { tbUsuarios };

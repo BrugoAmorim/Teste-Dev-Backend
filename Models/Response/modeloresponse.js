@@ -1,5 +1,5 @@
 
-const modeloUsuarioRes = () => {
+const modeloRes = () => {
 
     return {
         codigo: 0,
@@ -9,4 +9,4 @@ const modeloUsuarioRes = () => {
     }
 }
 
-module.exports = { modeloUsuarioRes };
+module.exports = { modeloRes };

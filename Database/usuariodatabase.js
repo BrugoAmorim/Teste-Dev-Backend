@@ -20,25 +20,6 @@ const inserirUsuario = async (req) => {
     return salvar;
 }
 
-const buscarEmail = async (emailusuario) => {
-
-    const usuario = await tbUsuarios.findOne({ where: { email: emailusuario }});
-    return usuario;
-}
-
-const buscarCpf = async (cpfusuario) => {
-
-    const cpfFormatado = cpfusuario.split(".").join("").replace("-", "");
-
-    const buscarUsuarios = await tbUsuarios.findAll({});
-    buscarUsuarios.map((data) => {
-
-        const cpfUser = data.cpf.split(".").join("").replace("-", "");
-        if(cpfUser === cpfFormatado)
-            return data;
-    });
-}
-
 const buscarUsuarioId = async (idusuario) => {
 
     const user = await tbUsuarios.findOne({ where: { id_usuario: idusuario }});
@@ -64,4 +45,4 @@ const salvarAlteracoesUsuario = async (idusuario, usuariobody) => {
     });
 }
 
-module.exports = { buscarUsuarios, inserirUsuario, buscarEmail, buscarCpf, buscarUsuarioId, apagarUsuario, salvarAlteracoesUsuario };
+module.exports = { buscarUsuarios, inserirUsuario, buscarUsuarioId, apagarUsuario, salvarAlteracoesUsuario };
