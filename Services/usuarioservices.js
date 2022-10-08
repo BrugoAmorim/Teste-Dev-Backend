@@ -7,18 +7,7 @@ function validarEmail(email) {
     return re.test(email);
 }
 
-const BuscarUsuarios = (Usuarios) => {
-
-    if(Usuarios.length === 0)
-        throw new Error("Não há usuários registrados");
-
-    const caixoteRes = utils.CriarModelRes(Usuarios, "Usuários retornados com sucesso", "sucesso", 200);
-    return caixoteRes;
-}
-
-const NovoUsuario = async (req) => {
-
-    const listaUsuarios = await database.buscarUsuarios();
+function validarCamposVazios(req){
 
     if(req.Nome.length === 0)
         throw new Error("o campo Nome é obrigatório");
@@ -34,6 +23,23 @@ const NovoUsuario = async (req) => {
 
     if(req.Cpf.length === 0)
         throw new Error("o campo Cpf é obrigatório");
+
+}
+
+const BuscarUsuarios = (Usuarios) => {
+
+    if(Usuarios.length === 0)
+        throw new Error("Não há usuários registrados");
+
+    const caixoteRes = utils.CriarModelRes(Usuarios, "Usuários retornados com sucesso", "sucesso", 200);
+    return caixoteRes;
+}
+
+const NovoUsuario = async (req) => {
+
+    const listaUsuarios = await database.buscarUsuarios();
+
+    validarCamposVazios(req);
 
     if(listaUsuarios.filter(x => x.email === req.Email).length > 0)
         throw new Error("este Email já esta sendo utilizado");
@@ -70,20 +76,7 @@ const EditarUsuario = async (idusuario, req) => {
     if(validarUser === null)
         throw new Error("Usuário não encontrado");
 
-    if(req.Nome.length === 0)
-        throw new Error("o campo Nome é obrigatório");
-
-    if(req.Sobrenome.length === 0)
-    throw new Error("o campo Sobrenome é obrigatório");
-    
-    if(req.Email.length === 0)
-        throw new Error("o campo Email é obrigatório");
-
-    if(req.Telefone.length === 0)
-        throw new Error("o campo Telefone é obrigatório");
-
-    if(req.Cpf.length === 0)
-        throw new Error("o campo Cpf é obrigatório");
+    validarCamposVazios(req);
 
     if(validarEmail(req.Email) === false)
         throw new Error("este Email é inválido");

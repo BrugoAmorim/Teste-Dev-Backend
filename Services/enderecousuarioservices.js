@@ -4,6 +4,27 @@ const databaseUsuarios = require('../Database/usuariodatabase');
 
 const utils = require('../Utils/conversorutils');
 
+function validarCamposVazios(req){
+    
+    if(req.logradouro.length == 0)
+        throw new Error("O campo Logradouro é obrigatório");    
+
+    if(req.numero.length == 0)
+        throw new Error("O campo Numero é obrigatório");
+    
+    if(req.cidade.length == 0)
+        throw new Error("O campo Cidade é obrigatório");
+    
+    if(req.uf.length == 0)
+        throw new Error("O campo Uf é obrigatório");
+
+    if(req.cep.length == 0)
+        throw new Error("O campo Cep é obrigatório");
+
+    if(req.bairro.length == 0)
+        throw new Error("O campo Bairro é obrigatório");
+}
+
 const validarEnderecos = async (idusuario) => {
 
     const infoUsuario = await databaseUsuarios.buscarUsuarioId(idusuario);
@@ -27,24 +48,8 @@ const validarNovoEndereco = async (req) => {
 
     if(usuario === null)
         throw new Error("o Usuário não foi encontrado");
-        
-    if(req.logradouro.length == 0)
-        throw new Error("O campo Logradouro é obrigatório");    
-
-    if(req.numero.length == 0)
-        throw new Error("O campo Numero é obrigatório");
-        
-    if(req.cidade.length == 0)
-        throw new Error("O campo Cidade é obrigatório");
-        
-    if(req.uf.length == 0)
-        throw new Error("O campo Uf é obrigatório");
-
-    if(req.cep.length == 0)
-        throw new Error("O campo Cep é obrigatório");
-
-    if(req.bairro.length == 0)
-        throw new Error("O campo Bairro é obrigatório");
+    
+    validarCamposVazios(req);
     
     const enderecoSalvo = await databaseEnderecos.salvarEndereco(req);
     const modelRes = utils.CriarModelRes(enderecoSalvo, "Endereço salvo com sucesso", "sucesso", 200);
@@ -88,23 +93,7 @@ const validarEdicaoEndereco = async (form, idenderecousuario) => {
     if(endereco.id_usuario !== form.id_usuario)
         throw new Error("Este endereço não pertence a você");
 
-    if(form.logradouro.length == 0)
-        throw new Error("O campo Logradouro é obrigatório");    
-
-    if(form.numero.length == 0)
-        throw new Error("O campo Numero é obrigatório");
-        
-    if(form.cidade.length == 0)
-        throw new Error("O campo Cidade é obrigatório");
-        
-    if(form.uf.length == 0)
-        throw new Error("O campo Uf é obrigatório");
-
-    if(form.cep.length == 0)
-        throw new Error("O campo Cep é obrigatório");
-
-    if(form.bairro.length == 0)
-        throw new Error("O campo Bairro é obrigatório");   
+    validarCamposVazios(form); 
         
     await databaseEnderecos.atualizarEndereco(form, idenderecousuario);
     const enderecoAtualizado = await databaseEnderecos.filtrarEnderecoId(idenderecousuario);
